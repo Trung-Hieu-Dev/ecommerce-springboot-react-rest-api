@@ -23,6 +23,7 @@ public class ProductReturnDto {
     public ProductReturnDto() {
     }
     public ProductReturnDto(Product product) {
+        this.id = product.getId();
         this.name = product.getName();
         this.description = product.getDescription();
         this.brand = product.getBrand();
