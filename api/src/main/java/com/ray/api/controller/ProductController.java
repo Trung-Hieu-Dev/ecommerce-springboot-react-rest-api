@@ -23,6 +23,7 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
+    // product list
     @GetMapping
     public ResponseEntity<List<ProductReturnDto>> getAllProducts() {
         List<Product> products = productRepository.findAll();
@@ -39,6 +40,7 @@ public class ProductController {
         return new ResponseEntity<>(returnDtoList, HttpStatus.OK);
     }
 
+    // get product by id
     @GetMapping("/{productId}")
     public ResponseEntity<ProductReturnDto> getProductById(@PathVariable("productId") Long productId) {
         Product product = productRepository.findById(productId).get();
