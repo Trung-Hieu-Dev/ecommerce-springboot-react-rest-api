@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { red } from '@mui/material/colors';
 import { Product } from '../../model/product';
+import { Link } from 'react-router-dom';
 
 interface Props {
 	product: Product;
@@ -44,7 +45,13 @@ export default function ProductCard(props: Props) {
 			</CardContent>
 			<CardActions>
 				<Button size="small">Add To Cart</Button>
-				<Button size="small">View</Button>
+				<Button
+					size="small"
+					component={Link}
+					to={`/catalog/${props.product.id}`}
+				>
+					View
+				</Button>
 			</CardActions>
 		</Card>
 	);
