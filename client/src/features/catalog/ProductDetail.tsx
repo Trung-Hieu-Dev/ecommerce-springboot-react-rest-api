@@ -22,7 +22,7 @@ export default function ProductDetail() {
 
 	useEffect(() => {
 		axios
-			.get(`http://localhost:8080/api/products/${params.productId}`)
+			.get(`products/${params.productId}`)
 			.then((res) => {
 				setProduct(res.data);
 			})
