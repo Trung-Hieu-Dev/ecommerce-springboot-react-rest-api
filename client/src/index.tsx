@@ -6,9 +6,20 @@ import './index.css';
 
 import App from './layout/App';
 import reportWebVitals from './reportWebVitals';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
+
+// get error if exist
+axios.interceptors.response.use(
+	(response) => {
+		return response;
+	},
+	(error: AxiosError) => {
+		console.log('interceptor run...');
+		return Promise.reject(error); // throw error
+	}
+);
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
