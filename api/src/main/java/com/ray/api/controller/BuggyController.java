@@ -22,16 +22,18 @@ public class BuggyController {
 
     // fake errors to test
     ///404 fake error
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<HttpResponse> noHandlerFoundException() {
+    @GetMapping("404")
+    public ResponseEntity<HttpResponse> returnError404ForTesting() {
         return createHttpResponse(HttpStatus.NOT_FOUND, "There is no mapping for this URL");
 
     }
 
     ///500 fake error
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<HttpResponse> internalServerErrorException(Exception ex) {
-        return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    @GetMapping("500")
+    public ResponseEntity<HttpResponse> returnError500ForTesting() {
+
+        return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Internal server error");
+
     }
 
     /// reused method

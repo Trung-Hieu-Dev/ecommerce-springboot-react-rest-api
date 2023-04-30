@@ -3,6 +3,7 @@ package com.ray.api.exception;
 import com.ray.api.dto.HttpResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
@@ -25,19 +26,21 @@ public class Exceptionhandling {
 
     }
 
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<HttpResponse> internalServerErrorException(Exception ex) {
-//        return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    // error 500
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<HttpResponse> internalServerErrorException(Exception ex) {
+        if (ex instanceof MethodArgumentNotValidException) {
+            MethodArgumentNotValidException exception = (MethodArgumentNotValidException) ex;
+            StringBuilder errors = new StringBuilder();
+            exception.getBindingResult().getAllErrors().forEach((error) -> {
+                String message = error.getDefaultMessage();
+                errors.append(message + "; ");
+            });
 
-//        return new ResponseEntity<>(
-//                new HttpResponse(
-//                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
-//                        HttpStatus.INTERNAL_SERVER_ERROR,
-//                        HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
-//                        ex.getMessage()),
-//                HttpStatus.INTERNAL_SERVER_ERROR
-//        );
-//    }
+            return createHttpResponse(HttpStatus.BAD_REQUEST, errors.toString());
+        }
+        return createHttpResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+    }
 
     private ResponseEntity<HttpResponse> createHttpResponse(HttpStatus httpStatus, String message) {
         HttpResponse httpResponse = new HttpResponse(
