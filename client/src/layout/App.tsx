@@ -6,6 +6,7 @@ import {
 	createTheme,
 } from '@mui/material';
 import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import './App.css';
 
@@ -29,6 +30,7 @@ function App() {
 	return (
 		<>
 			<ThemeProvider theme={theme}>
+				<ToastContainer position="bottom-right" hideProgressBar />
 				<CssBaseline />
 				<Header onSetDarkMode={setDarkMode} darkMode={darkMode} />
 				<Container>

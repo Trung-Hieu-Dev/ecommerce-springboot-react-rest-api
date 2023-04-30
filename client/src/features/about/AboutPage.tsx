@@ -1,7 +1,20 @@
-import { Button, ButtonGroup, Container, Typography } from '@mui/material';
+import {
+	Alert,
+	AlertTitle,
+	Button,
+	ButtonGroup,
+	Container,
+	List,
+	ListItem,
+	ListItemText,
+	Typography,
+} from '@mui/material';
 import axios from 'axios';
+import { useState } from 'react';
 
 export default function AboutPage() {
+	const [validationErrors, setValidationErrors] = useState<string[]>([]);
+
 	return (
 		<Container>
 			<Typography>Error Messages</Typography>
@@ -15,7 +28,7 @@ export default function AboutPage() {
 								email: 'fewfew',
 							})
 							.then((response) => console.log(response.data))
-							.catch((error) => console.log(error.response.data.message))
+							.catch((error) => setValidationErrors(error))
 					}
 				>
 					Test Validate Error
@@ -26,7 +39,7 @@ export default function AboutPage() {
 						axios
 							.get('/buggy/404')
 							.then((response) => console.log(response.data))
-							.catch((error) => console.log(error.response.data.message))
+							.catch((error) => console.log(error))
 					}
 				>
 					Test 404
@@ -37,12 +50,25 @@ export default function AboutPage() {
 						axios
 							.get('/buggy/500')
 							.then((response) => console.log(response.data))
-							.catch((error) => console.log(error.response.data.message))
+							.catch((error) => console.log(error))
 					}
 				>
 					Test 500
 				</Button>
 			</ButtonGroup>
+
+			{validationErrors.length > 0 && (
+				<Alert severity="error">
+					<AlertTitle>Validation Errors</AlertTitle>
+					<List>
+						{validationErrors.map((error) => (
+							<ListItem key={error}>
+								<ListItemText>{error}</ListItemText>
+							</ListItem>
+						))}
+					</List>
+				</Alert>
+			)}
 		</Container>
 	);
 }

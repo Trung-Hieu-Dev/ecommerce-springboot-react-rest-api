@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
+import axios, { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
 
+import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 
 import App from './layout/App';
 import reportWebVitals from './reportWebVitals';
-import axios, { AxiosError } from 'axios';
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
@@ -15,8 +17,24 @@ axios.interceptors.response.use(
 	(response) => {
 		return response;
 	},
-	(error: AxiosError) => {
+	(error: AxiosError<any>) => {
 		console.log('interceptor run...');
+		// displaying error message with react-toastify
+		switch (error.response?.status) {
+			case 400:
+				if (error.response?.data.message) {
+					const errors = error.response?.data.message
+						.split('; ')
+						.filter((message: string) => message !== '');
+					throw errors;
+				}
+				toast.error(error.response?.data.message, { theme: 'colored' });
+				break;
+
+			default:
+				toast.error(error.response?.data.message, { theme: 'light' });
+				break;
+		}
 		return Promise.reject(error); // throw error
 	}
 );
