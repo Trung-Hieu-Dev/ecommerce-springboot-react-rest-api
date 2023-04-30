@@ -6,9 +6,14 @@ import { toast } from 'react-toastify';
 export default function AxiosInterceptor(props: any) {
 	const navigate = useNavigate();
 
+	//fake slow loading
+	const sleep = (milliseconds: number) =>
+		new Promise((resolve) => setTimeout(resolve, milliseconds));
+
 	useEffect(() => {
 		const interceptor = axios.interceptors.response.use(
-			(response) => {
+			async (response) => {
+				await sleep(3000);
 				return response;
 			},
 			(error: AxiosError<any>) => {
