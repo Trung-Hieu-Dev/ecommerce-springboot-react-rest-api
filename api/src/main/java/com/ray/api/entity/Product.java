@@ -18,7 +18,7 @@ import java.util.Date;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     private String name;
     private String description;
@@ -45,6 +45,11 @@ public class Product {
     @JoinColumn(name = "category_id")
 //    @JsonIgnore
     private ProductCategory category;
+
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    @JsonIgnore
+    private BasketItem basketItem;
 
     public Product() {
     }

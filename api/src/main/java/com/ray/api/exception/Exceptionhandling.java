@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+import javax.persistence.NoResultException;
+import java.util.NoSuchElementException;
+
 @RestControllerAdvice
 public class Exceptionhandling {
 
@@ -25,6 +28,7 @@ public class Exceptionhandling {
         return createHttpResponse(HttpStatus.NOT_FOUND, "There is no mapping for this URL");
 
     }
+
 
     // error 500
     @ExceptionHandler(Exception.class)
@@ -50,5 +54,15 @@ public class Exceptionhandling {
                                         message
                                     );
         return new ResponseEntity<>(httpResponse, httpStatus);
+    }
+
+    @ExceptionHandler(NoResultException.class)
+    public ResponseEntity<HttpResponse> noResultException(NoResultException exception) {
+        return createHttpResponse(HttpStatus.NOT_FOUND, exception.getMessage());
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<HttpResponse> noSuchElementException(NoSuchElementException exception) {
+        return createHttpResponse(HttpStatus.NOT_FOUND, exception.getMessage());
     }
 }

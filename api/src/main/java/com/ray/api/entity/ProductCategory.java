@@ -13,7 +13,7 @@ import java.util.Set;
 public class ProductCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
     @Column(name = "category_name")
     private String categoryName;
 
